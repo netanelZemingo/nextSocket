@@ -1,4 +1,9 @@
-module.exports = {
+const withPWA = require("next-pwa")({
+  dest: "public",
+  importScripts: ['/customWorker.js']
+
+});
+module.exports = withPWA({
   reactStrictMode: true,
   compiler: {
     // see https://styled-components.com/docs/tooling#babel-plugin for more info on the options.
@@ -26,4 +31,6 @@ module.exports = {
       // pure?: boolean,
     },
   },
-};
+
+});
+
