@@ -2,14 +2,16 @@
 import { Button } from "@/Components/Button";
 
 import { SocketClient } from "@/SocketClient";
-import { randomUUID } from "crypto";
-import { KeyboardEvent, useEffect, useState } from "react";
+import { Fragment, KeyboardEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { getMessages } from "./api/messages";
 import { Input } from "@/Components/Input";
+import { Msg } from "./api/Services/MessagesClass";
+import { useGlobalContext } from "../../context/UsernameContext";
+import { useRouter } from "next/router";
 
 interface chatProps {
-  msgsProps: string[];
+  msgsProps: Msg[];
 }
 export async function getServerSideProps() {
   return {
@@ -18,11 +20,20 @@ export async function getServerSideProps() {
 }
 
 const Home = ({ msgsProps }: chatProps) => {
+  const router = useRouter();
+
   const initSocket = async () => {
     return await fetch("/api/socket");
   };
+  const { setUsername, username } = useGlobalContext();
 
-  const [messages, setMessages] = useState<string[]>([]);
+  useEffect(() => {
+    if (!username) {
+      router.replace("/");
+    }
+  }, [router, username]);
+
+  const [messages, setMessages] = useState<Msg[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [someoneTyping, setSomeoneTyping] = useState<boolean>(false);
   useEffect(() => {
@@ -33,7 +44,7 @@ const Home = ({ msgsProps }: chatProps) => {
       SocketClient.getInstance().on("connect", () => {
         console.log("connected");
       });
-      SocketClient.getInstance().on("message-get", (msgs: string[]) => {
+      SocketClient.getInstance().on("message-get", (msgs: Msg[]) => {
         setMessages(msgs);
       });
       SocketClient.getInstance().on("typing", () => {
@@ -54,14 +65,14 @@ const Home = ({ msgsProps }: chatProps) => {
     setInputValue(e.currentTarget.value);
   };
 
-  const onMessageSend = () => {
-    SocketClient.getInstance().emit("message-send", inputValue);
+  const onMessageSend = (msg: Msg) => {
+    SocketClient.getInstance().emit("message-send", msg);
     setInputValue("");
   };
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.code !== "Enter") return;
-    onMessageSend();
+    onMessageSend({ username, msg: inputValue });
   };
 
   return (
@@ -69,7 +80,10 @@ const Home = ({ msgsProps }: chatProps) => {
       <MessagesList>
         {someoneTyping ? "Someone is Typing!" : ""}
         {messages.map((msg, i) => (
-          <MessagesItem key={i}>{msg}</MessagesItem>
+          <Fragment key={i}>
+            <MessageUsername username={msg.username} />
+            <MessagesItem>{msg.msg}</MessagesItem>
+          </Fragment>
         ))}
       </MessagesList>
       <InputAndButton>
@@ -80,13 +94,16 @@ const Home = ({ msgsProps }: chatProps) => {
           value={inputValue}
           onChange={emitInputChange}
         />
-        <Button onClick={onMessageSend}>Send</Button>
+        <Button onClick={() => onMessageSend({ username, msg: inputValue })}>Send</Button>
       </InputAndButton>
     </MessagesView>
   );
 };
 export default Home;
 
+const MessageUsername = ({ username }: { username: string }) => {
+  return <MessagesItem color="gray">{username}</MessagesItem>;
+};
 
 const MessagesView = styled.div`
   display: flex;

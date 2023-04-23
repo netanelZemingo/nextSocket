@@ -1,9 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { NextApiResponseWithSocket } from "./types";
+import { NextApiResponseWithSocket } from "../types";
 import fs from "fs";
 import path from "path";
-// import msgJson from "./messages.json";
 
+export interface Msg {
+  username: string;
+  msg: string;
+}
 export class Messages {
   private static instance: Messages;
   constructor() {
@@ -16,14 +19,14 @@ export class Messages {
     }
     return this.instance;
   }
-  messages: ReadonlyArray<string> = [];
+  messages: ReadonlyArray<Msg> = [];
   private pathToMessages = path.join(process.cwd(), "json") + "/messages.json";
 
-  private readFile(): string[] {
+  private readFile(): Msg[] {
     return JSON.parse(fs.readFileSync(this.pathToMessages, "utf8"));
   }
 
-  addMessage(msg: string) {
+  addMessage(msg: Msg) {
     const fileContents = this.readFile();
 
     fileContents.push(msg);

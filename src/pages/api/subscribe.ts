@@ -1,31 +1,38 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import webpush, { PushSubscription } from "web-push";
+import { SubscriptionClass } from "./Services/Subscription";
 const publicVapidKey =
   "BEc2-0v3UehTphhFjanlWc_nQUkuodnenCdq8U1LQPE9TqSXGpABxtLc4zqhG1gJzuIjyGZjgnEP4XFt5aeiw5g";
 
 const privateVapidKey = "lLz1YAkSM7DL6oOvlvD7yasJIVsLdnbq5hLXG7GGOFg";
 
 webpush.setVapidDetails("mailto:noti56@gmail.com", publicVapidKey, privateVapidKey);
-let subscription1: PushSubscription;
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const subscription: PushSubscription = req.body.subscription;
-
-    // Send 201 - resource created
+    const username: string = req.body.username;
     res.status(201);
+    console.log(username, "username");
 
-    // Create payload
-    const payload = JSON.stringify({ title: "Push Test", message: "hello there" });
-    subscription1 = subscription;
-    // Pass object into sendNotification
+    SubscriptionClass.getInstance().add(username, subscription);
+
+    const payload = JSON.stringify({
+      title: "Push Test",
+      message: "hello there welcome " + username,
+    });
+
     webpush.sendNotification(subscription, payload).catch((err) => console.error(err));
+    res.json("created sucssesfully");
+    return;
   }
+  res.json("failed");
 }
 
-setInterval(() => {
-  if (subscription1) {
-    const payload = JSON.stringify({ title: "Push Test", message: "hello there" });
+// setInterval(() => {
+//   if (subscription1) {
+//     const payload = JSON.stringify({ title: "Push Test", message: "hello there" });
 
-    webpush.sendNotification(subscription1, payload).catch((err) => console.error(err));
-  }
-}, 3000);
+//     webpush.sendNotification(subscription1, payload).catch((err) => console.error(err));
+//   }
+// }, 3000);

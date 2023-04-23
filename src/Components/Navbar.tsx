@@ -8,12 +8,23 @@ const Nav = styled.nav`
   display: flex;
   gap: 15px;
 `;
+const Title = styled.h1`
+  /* height: 5%; */
+  padding: 0;
+  margin: 0;
+  background-color: lightgray;
+  margin: auto;
+`;
+
 const Navbar = () => {
   return (
-    <Nav>
-      <Link href={"/chat"}>Chat</Link>
-      <Link href={"/login"}>Admin</Link>
-    </Nav>
+    <>
+      <Nav>
+        <Link href={"/chat"}>Chat</Link>
+        <Link href={"/login"}>Admin</Link>
+        <Title>PWA real time notifications</Title>
+      </Nav>
+    </>
   );
 };
 
