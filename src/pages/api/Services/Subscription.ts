@@ -9,12 +9,9 @@ export class SubscriptionClass {
   static getInstance() {
     if (!this.instance) {
       this.instance = new SubscriptionClass();
+      this.instance.subsrciptions = {};
     }
     return this.instance;
-  }
-
-  constructor() {
-    this.subsrciptions = {};
   }
 
   subsrciptions: { [username: string]: { pushSubscription: PushSubscription } } = {};
