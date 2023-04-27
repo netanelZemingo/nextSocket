@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextApiResponseWithSocket } from "../types";
 import fs from "fs";
 import path from "path";
-import { firebase } from "../../../../db/firebase";
 
 export interface Msg {
   username: string;
