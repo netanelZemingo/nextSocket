@@ -9,24 +9,28 @@ const privateVapidKey = "lLz1YAkSM7DL6oOvlvD7yasJIVsLdnbq5hLXG7GGOFg";
 webpush.setVapidDetails("mailto:noti56@gmail.com", publicVapidKey, privateVapidKey);
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
-    const subscription: PushSubscription = req.body.subscription;
-    const username: string = req.body.username;
-    res.status(201);
-    console.log(username, "username");
+  try {
+    if (req.method === "POST") {
+      const subscription: PushSubscription = req.body.subscription;
+      const username: string = req.body.username;
+      res.status(201);
+      console.log(username, "username");
 
-    SubscriptionClass.getInstance().add(username, subscription);
+      SubscriptionClass.getInstance().add(username, subscription);
 
-    const payload = JSON.stringify({
-      title: "Push Test",
-      message: "hello there welcome " + username,
-    });
+      const payload = JSON.stringify({
+        title: "Push Test",
+        message: "hello there welcome " + username,
+      });
 
-    webpush.sendNotification(subscription, payload).catch((err) => console.error(err));
-    res.json("created sucssesfully");
-    return;
+      webpush.sendNotification(subscription, payload).catch((err) => console.error(err));
+      res.json("created sucssesfully");
+      return;
+    }
+    res.json("failed");
+  } catch (error) {
+    res.json(error);
   }
-  res.json("failed");
 }
 
 // setInterval(() => {
