@@ -10,11 +10,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     Messages.getInstance().addMessage(msg);
 
     // get all other subspritions and not the senders !
-    SubscriptionClass.getInstance().notifyEveryoneButUser(msg.username, {
+    SubscriptionClass.getInstance().notifyEveryoneButUser(username, {
       title: `Message from ${username}`,
       message: msg,
     });
     res.json("updated users");
+    return;
   }
   res.json("failed");
 }

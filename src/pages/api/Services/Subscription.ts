@@ -6,12 +6,11 @@ import { Msg } from "./MessagesClass";
 export class SubscriptionClass {
   private static instance: SubscriptionClass;
 
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new SubscriptionClass();
-      this.instance.subsrciptions = {};
+  static getInstance(): SubscriptionClass {
+    if (!(globalThis as any).subscription) {
+      (globalThis as any).subscription = new SubscriptionClass();
     }
-    return this.instance;
+    return (globalThis as any).subscription;
   }
   constructor() {}
 
@@ -26,6 +25,8 @@ export class SubscriptionClass {
   }
 
   notifyEveryoneButUser(usernameNotToSend: string, payload: Payload) {
+    console.log(usernameNotToSend);
+    
     const userSub = this.subsrciptions[usernameNotToSend];
     console.log(usernameNotToSend);
     console.log(userSub, "usersub");
