@@ -6,6 +6,7 @@ import { Msg } from "./MessagesClass";
 export class SubscriptionClass {
   private static instance: SubscriptionClass;
 
+  
   static getInstance(): SubscriptionClass {
     if (!(globalThis as any).subscription) {
       (globalThis as any).subscription = new SubscriptionClass();
