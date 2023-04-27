@@ -14,29 +14,13 @@ export class SubscriptionClass {
   }
 
   constructor() {
-    const jsonData = this.readFile();
-
-    this.subsrciptions = jsonData ? { ...jsonData } : {};
+    this.subsrciptions = {};
   }
 
   subsrciptions: { [username: string]: { pushSubscription: PushSubscription } } = {};
 
-  // private pathToJson = path.join(process.cwd(), "tmp", "subs.json");
-  private pathToJson = `/tmp/subs.json`;
-
-  private readFile(): { [username: string]: { pushSubscription: PushSubscription } } {
-    return JSON.parse(fs.readFileSync(this.pathToJson, "utf8"));
-  }
-
-  private writeFile(username: string, pushSubscription: PushSubscription) {
-    const fileContents = this.readFile();
-    fileContents[username] = { pushSubscription: pushSubscription };
-    fs.writeFileSync(this.pathToJson, JSON.stringify(fileContents));
-  }
-
   add(username: string, pushSubscription: PushSubscription) {
-    this.writeFile(username, pushSubscription);
-    this.subsrciptions = this.readFile();
+    this.subsrciptions[username] = { pushSubscription: pushSubscription };
   }
 
   find(username: string) {
