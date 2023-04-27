@@ -21,7 +21,8 @@ export class Messages {
   }
   messages: ReadonlyArray<Msg> = [];
 
-  private pathToMessages = path.join(process.cwd(), "tmp") + "/messages.json";
+  // private pathToMessages = path.join(process.cwd(), "tmp") + "/messages.json";
+  private pathToMessages = "/tmp/messages.json";
 
   private readFile(): Msg[] {
     return JSON.parse(fs.readFileSync(this.pathToMessages, "utf8"));
