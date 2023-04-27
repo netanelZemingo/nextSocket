@@ -38,7 +38,7 @@ const ActivateSubsription = () => {
       const res = await fetch(`/api/getuser/${username}`);
       const data = await res.json();
       if (!data.err) {
-        await router.replace("chat");
+        await router.replace("sendnotifications");
       }
     } catch (error) {}
   };

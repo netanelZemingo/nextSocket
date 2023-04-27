@@ -20,8 +20,8 @@ const Navbar = () => {
   return (
     <>
       <Nav>
-        <Link href={"/chat"}>Chat</Link>
-        <Link href={"/login"}>Admin</Link>
+        {/* <Link href={"/chat"} >Chat</Link> */}
+        <Link href={"/sendnotifications"}>Send Notifications</Link>
         <Title>PWA real time notifications</Title>
       </Nav>
     </>
