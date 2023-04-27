@@ -13,6 +13,7 @@ export class SubscriptionClass {
     }
     return this.instance;
   }
+  constructor() {}
 
   subsrciptions: { [username: string]: { pushSubscription: PushSubscription } } = {};
 
