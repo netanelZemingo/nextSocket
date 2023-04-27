@@ -14,7 +14,9 @@ export class SubscriptionClass {
   }
 
   constructor() {
-    this.subsrciptions = this.readFile();
+    const jsonData = this.readFile();
+
+    this.subsrciptions = jsonData ? { ...jsonData } : {};
   }
 
   subsrciptions: { [username: string]: { pushSubscription: PushSubscription } } = {};
