@@ -19,7 +19,7 @@ export class SubscriptionClass {
 
   subsrciptions: { [username: string]: { pushSubscription: PushSubscription } } = {};
 
-  private pathToJson = path.join(process.cwd(), "json") + "/subs.json";
+  private pathToJson = path.join(process.cwd(), "json", "subs.json");
 
   private readFile(): { [username: string]: { pushSubscription: PushSubscription } } {
     return JSON.parse(fs.readFileSync(this.pathToJson, "utf8"));
