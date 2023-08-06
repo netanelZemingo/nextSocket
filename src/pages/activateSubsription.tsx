@@ -1,7 +1,7 @@
 import { urlBase64ToUint8Array } from "@/utills/urlBase64ToUint8Array";
 import React, { useEffect, useState } from "react";
-import { Input } from "./Input";
-import { Button } from "./Button";
+import { Input } from "../Components/Input";
+import { Button } from "../Components/Button";
 import { useRouter } from "next/router";
 import { useGlobalContext } from "../../context/UsernameContext";
 const publicVapidKey =

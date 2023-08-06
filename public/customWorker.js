@@ -15,7 +15,7 @@
 // });
 'use strict';
 
-self.__WB_DISABLE_DEV_LOGS = true;
+// self.__WB_DISABLE_DEV_LOGS = true;
 
 console.log("custom service worker is running");
 self.addEventListener('push', function (event) {

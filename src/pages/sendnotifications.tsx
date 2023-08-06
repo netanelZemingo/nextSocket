@@ -21,11 +21,11 @@ export async function getServerSideProps() {
 const Home = ({ msgsProps }: chatProps) => {
   const router = useRouter();
 
-  const { setUsername, username } = useGlobalContext();
+  const { username } = useGlobalContext();
 
   useEffect(() => {
     if (!username) {
-      router.replace("/");
+      router.replace("/activateSubsription");
     }
   }, [router, username]);
 
